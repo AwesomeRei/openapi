@@ -1,0 +1,110 @@
+openapi: "3.0.0"
+info:
+    version: 1.0.0
+    title: ID Verification
+    license:
+        name: Telkomsel
+servers:
+    - url: http://localhost:5050/v1
+paths:
+    /hello:
+        get:
+            summary: Say hello to check availability of servers
+            operationId: say hello
+            tags: 
+            - greeting
+            responses:
+              '200':
+                description: A paged array of pets
+                content:
+                  application/json:    
+                    schema:
+                        type: object
+                        properties:
+                          message:
+                            type: string
+                            description: just a welcome message
+                          
+    /validate:
+      post:
+        summary: validate input with image input
+        requestBody:
+          description: Contain input value and image
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [input,image,title]
+                properties:
+                  input: 
+                    type: string
+                    description: value inputted by user
+                  image:
+                    type: string
+                    description: name of the imagefile
+                  title:
+                    type: string
+                    description: just title
+        responses:
+          '200':
+            description: inputted value, result of the OCR and match or not
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ocr_output:
+                      type: string
+                      description: OCR result
+                    id:
+                      type: string
+                      description: id extracted from image
+                    input:
+                      type: string
+                      description: inputted value from user
+                    match:
+                      type: integer
+                      description: 0 if not match and 1 if matched
+
+          '400':
+            description: bad request required value doesn't available
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      description: describe error bad request
+                    id:
+                      type: integer
+                      description: print 400 code
+                      
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The user ID.
+        username:
+          type: string
+          description: The user name. 
+    Test:
+      type: object
+      properties:
+        ocr_output:
+          type: string
+          description: OCR result
+        id:
+          type: string
+          description: id extracted from image
+        input:
+          type: string
+          description: inputted value from user
+        match:
+          type: integer
+          description: 0 if not match and 1 if matched
+        
